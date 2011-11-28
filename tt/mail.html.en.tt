@@ -1,0 +1,12 @@
+<html>
+<body>
+Hi, 
+<p>
+This morning Lake Thurmond water level is at an elevation of [% elevation %] feet.<br/>
+Please see: <a href="[% url %]">[% url %]</a>
+</p>
+<p>
+/Mirko
+</p>
+</body>
+</html> 

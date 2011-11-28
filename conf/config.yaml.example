@@ -1,0 +1,6 @@
+---
+url: http://www.srh.noaa.gov/ffc/html/rrm.php
+smtpServer: example.com
+smtpServerUsername: myusername
+smtpServerPassword: mypassword
+

@@ -1,0 +1,12 @@
+<html>
+<body>
+Dobar dan [% first_name %], 
+<p>
+Jutros je jezero Thurmond na nivou od [% elevation %] stopa.<br/>
+Vidite: <a href="[% url %]">[% url %]</a>
+</p>
+<p>
+/Mirko
+</p>
+</body>
+</html> 

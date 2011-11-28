@@ -1,0 +1,6 @@
+Dobar dan [% first_name %],
+
+Jutros je jezero Thurmond na nivou od [% elevation %] stopa.
+Vidite: [% url %]
+
+/Mirko

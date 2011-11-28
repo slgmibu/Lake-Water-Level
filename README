@@ -1,0 +1,5 @@
+1. rename <approot>/conf/config.yaml.example to <approot>/conf/config.yaml
+2. provide missing values in <approot>/conf/config.yaml
+3. modify <approot>/cron.d/scrape to point to absolute location of <approot>/scrape.pl
+4. copy <approot>/cron.d/scrape to your /etc/cron.d/ directory
+
