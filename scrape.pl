@@ -8,12 +8,12 @@ use MIME::Lite::TT::HTML;
 use WWW::Mechanize;
 use YAML::XS qw(LoadFile);
 
-# Load Config
+### Load Configuration File
 open my $configFile, '<', 'conf/config.yaml' or die "can't open config file: $!";
 my $config = LoadFile($configFile);
 #print Dumper $config;
 
-# Scrape Lake Thurmond elevation
+### Scrape Lake Thurmond elevation
 my $url = $config->{'url'};
 my $agent = WWW::Mechanize->new();
 $agent->get($url);
@@ -37,7 +37,7 @@ while($stream->get_tag("tr") and not $done) {
     }
 }
 
-# Send elevation in an email
+### Send elevation in an email
 my %params; 
 $params{first_name} = "Mirko";
 $params{elevation}  = $elevation;
