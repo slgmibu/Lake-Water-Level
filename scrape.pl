@@ -7,6 +7,7 @@ use HTML::TokeParser;
 use MIME::Lite::TT::HTML;
 use WWW::Mechanize;
 use YAML::XS qw(LoadFile);
+use Net::SMTP::TLS;  
 
 ### Load Configuration File
 open my $configFile, '<', 'conf/config.yaml' or die "can't open config file: $!";
@@ -32,7 +33,7 @@ while($stream->get_tag("tr") and not $done) {
         $stream->get_tag("td"); # Summer Level (feet)
         $stream->get_tag("td"); # 7am Pool Elev (ft)
         $elevation = $stream->get_trimmed_text("/td");
-        print "$elevation\n";
+        print "Elevation: $elevation\n";
         $done = 1;
     }
 }
@@ -46,18 +47,28 @@ $params{url}  = $url;
 my %options; 
 $options{INCLUDE_PATH} = 'tt'; 
 
-my $msg = MIME::Lite::TT::HTML->new( 
-    From        =>  'mirko.bulovic@nokia.com',
-    To          =>  'lake-thurmond-water-level-watch@googlegroups.com',
-    Subject     =>  'Lake Thurmond Water Level', 
+my $msg = MIME::Lite::TT::HTML->new(
+    From        =>  $config->{'fromAddress'},
+    To          =>  $config->{'toAddress'},
+    Subject     =>  'Lake Thurmond Water Level',
     Template    =>  {
             text    =>  'mail.text.en.tt',
             html    =>  'mail.html.en.tt',
     },
     TmplOptions =>  \%options, 
-    TmplParams  =>  \%params, 
+    TmplParams  =>  \%params
 );
 
-#$msg->send('smtp','localhost', Debug=>0 );
-$msg->send_by_smtp('smtp', $config->{'smtpServer'}, AuthUser=>$config->{'smtpServerUsername'}, AuthPass=>$config->{'smtpServerPassword'}, Auth=>'NTLM', Debug=>1);
+my $mailer = new Net::SMTP::TLS(  
+	'smtp.gmail.com',  
+      	Hello   => $config->{'smtpServerName'},  
+        Port    => $config->{'smtpServerPort'},  
+        User    => $config->{'smtpServerUsername'},  
+        Password=> $config->{'smtpServerPassword'});  
+$mailer->mail($config->{'fromAddress'});
+$mailer->to($config->{'toAddress'});
+$mailer->data;
+$mailer->datasend($msg->as_string);
+$mailer->dataend;
+$mailer->quit;
 
