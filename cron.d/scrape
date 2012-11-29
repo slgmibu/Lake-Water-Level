@@ -1,2 +1,2 @@
 # m h dom mon dow user  command
-15 9	* * *	bulovic	/home/bulovic/NetBeansProjects/Lake-Water-Level/scrape.pl
+15 9	* * *	slgmibu	~/githubworkspace/Lake-Water-Level/scrape.pl

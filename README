@@ -1,5 +1,26 @@
-1. rename <approot>/conf/config.yaml.example to <approot>/conf/config.yaml
+1. copy <approot>/conf/config.yaml.example to <approot>/conf/config.yaml
 2. provide missing values in <approot>/conf/config.yaml
-3. modify <approot>/cron.d/scrape to point to absolute location of <approot>/scrape.pl
-4. copy <approot>/cron.d/scrape to your /etc/cron.d/ directory
+3. copy <approot>/cron.d/scrape to your /etc/cron.d/ directory
+4. modify /etc/cron.d/scrape to point to absolute location of <approot>/scrape.pl
+5. run scrape.pl directly to identify problems 
+5. install cpanm, see http://www.cpan.org/modules/INSTALL.html
+6. install Perl modules as needed 
+7. if needed patch Net::SMTP::TLS.pm
+sub starttls {
+	my $me	= shift;
+	$me->_command("STARTTLS");
+	my ($num,$txt) = $me->_response();
+	if(not $num == 220){
+		croak "Invalid response for STARTTLS: $num $txt\n";
+	}
+	if(not IO::Socket::SSL::socket_to_SSL($me->{sock},
+		SSL_verify_mode => SSL_VERIFY_NONE,
+		#SSL_version	=>	"SSLv3 TLSv1")){
+		SSL_version	=>	"SSLv3")){
+			croak "Couldn't start TLS: ".IO::Socket::SSL::errstr."\n";
+	}
+	$me->hello();
+}
+ 
+
 
